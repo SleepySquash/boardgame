@@ -7,7 +7,9 @@ environment:
   sdk: ">=2.17.6 <3.0.0"
 
 dependencies:
+  collection: ^1.16.0
   badges: ^2.0.3
+  dotted_border: ^2.0.0+2
   flutter:
     sdk: flutter
   get: ^4.6.5
@@ -26,3 +28,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/card/door/enemy/
+    - assets/card/door/curse/
