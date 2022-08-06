@@ -17,9 +17,8 @@ class CredentialsHiveProvider extends HiveBaseProvider<Credentials> {
   }
 
   /// Returns the stored [Credentials] from the [Hive].
-  Credentials? getCredentials() => getSafe(0);
+  Credentials? get() => getSafe(0);
 
   /// Stores the provided [Credentials] to the [Hive].
-  Future<void> setCredentials(Credentials credentials) =>
-      putSafe(0, credentials);
+  Future<void> set(Credentials credentials) => putSafe(0, credentials);
 }

@@ -1,7 +1,4 @@
 import 'package:badges/badges.dart';
-import 'package:boardgame/ui/page/home/page/game/component/equipment.dart';
-import 'package:boardgame/ui/widget/modal_popup.dart';
-import 'package:collection/collection.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart' hide Card;
 import 'package:get/get.dart';
@@ -12,6 +9,8 @@ import '/ui/widget/avatar.dart';
 import '/ui/widget/button.dart';
 import '/ui/widget/card.dart';
 import 'controller.dart';
+import 'widget/equipment.dart';
+import '/ui/widget/modal_popup.dart';
 
 class GameView extends StatelessWidget {
   const GameView({Key? key}) : super(key: key);
@@ -19,7 +18,7 @@ class GameView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-      init: GameController(),
+      init: GameController(Get.find()),
       builder: (GameController c) {
         return Scaffold(
           appBar: PreferredSize(
@@ -34,7 +33,7 @@ class GameView extends StatelessWidget {
                   ),
                   Expanded(child: Obx(() {
                     return Text(
-                        'Stage: ${c.stage.value?.name} | Turn: ${c.turn.value?.name}');
+                        'Stage: ${c.stage.value?.name} | Turn: ${c.turn.value}');
                   })),
                   WidgetButton(
                     onPressed: () {},
@@ -82,12 +81,9 @@ class GameView extends StatelessWidget {
                     Flexible(
                       child: Obx(() {
                         return _deck(
-                          onPressed: c.turn.value == c.player &&
+                          onPressed: c.turn.value == c.player.value?.id &&
                                   c.stage.value == RoundStage.treasure
-                              ? () {
-                                  c.top.value = c.deck.treasures.sample(1);
-                                  c.stage.value = RoundStage.end;
-                                }
+                              ? c.spawnTreasures
                               : null,
                           child: const Center(
                             child: Text(
@@ -102,7 +98,7 @@ class GameView extends StatelessWidget {
                     Flexible(
                       child: Obx(() {
                         return _deck(
-                          onPressed: c.turn.value == c.player &&
+                          onPressed: c.turn.value == c.player.value?.id &&
                                   c.stage.value == RoundStage.start
                               ? c.openDoor
                               : null,
@@ -144,7 +140,7 @@ class GameView extends StatelessWidget {
         Expanded(child: Obx(() {
           if (c.stage.value == RoundStage.battle) {
             return DragTarget<_FromHand>(
-              onWillAccept: (d) => d?.card is Bonus || d?.card is LevelUp,
+              onWillAccept: (d) => d?.card is Bonus || d?.card is LevelAddition,
               onAccept: (d) => c.addToTop(d.card),
               builder: (context, candidates, rejected) {
                 return Center(
@@ -206,7 +202,7 @@ class GameView extends StatelessWidget {
             child: DragTarget<_FromHand>(
           onWillAccept: (d) =>
               (c.stage.value == RoundStage.battle && d?.card is Bonus) ||
-              d?.card is LevelUp,
+              d?.card is LevelAddition,
           onAccept: (d) => c.addToBottom(d.card),
           builder: (context, candidates, rejected) {
             return Obx(() {
@@ -348,7 +344,8 @@ class GameView extends StatelessWidget {
       return Row(
         children: [
           DragTarget<_DraggableCard>(
-            onWillAccept: (d) => d?.card is Equipable || d?.card is LevelUp,
+            onWillAccept: (d) =>
+                d?.card is Equipable || d?.card is LevelAddition,
             onAccept: (d) => c.equip(d.card),
             builder: (context, candidates, rejected) {
               return Padding(

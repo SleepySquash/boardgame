@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:boardgame/domain/model/player.dart';
+import 'package:boardgame/domain/service/player.dart';
 import 'package:get/get.dart';
+import 'package:uuid/uuid.dart';
 
 import '../model/credentials.dart';
 import '/provider/hive/credentials.dart';
@@ -33,7 +36,7 @@ class AuthService extends GetxService {
   /// [Routes.auth] page if this operation fails. Otherwise, fetches user data
   /// from the server to be up-to-date with it.
   Future<String?> init() async {
-    Credentials? creds = _sessionProvider.getCredentials();
+    Credentials? creds = _sessionProvider.get();
 
     if (creds != null) {
       _authorized(creds);
@@ -50,7 +53,7 @@ class AuthService extends GetxService {
     try {
       Credentials creds = Credentials();
       _authorized(creds);
-      _sessionProvider.setCredentials(creds);
+      _sessionProvider.set(creds);
       status.value = RxStatus.success();
     } catch (e) {
       _unauthorized();
@@ -64,7 +67,7 @@ class AuthService extends GetxService {
     try {
       Credentials creds = Credentials();
       _authorized(creds);
-      _sessionProvider.setCredentials(creds);
+      _sessionProvider.set(creds);
       status.value = RxStatus.success();
     } catch (e) {
       _unauthorized();

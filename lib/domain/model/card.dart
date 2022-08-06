@@ -11,6 +11,8 @@ mixin Equipable on Card {
 
 mixin Door on Card {}
 
+mixin EnemyAddition on Door {}
+
 mixin Enemy on Door {
   int get level => 1;
   int get treasures => 1;
@@ -35,7 +37,7 @@ mixin Class on Equipable {
 
 mixin Treasure on Card {}
 
-mixin LevelUp on Treasure {}
+mixin LevelAddition on Treasure {}
 
 mixin Head on Equipable {}
 

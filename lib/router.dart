@@ -1,3 +1,8 @@
+import 'package:boardgame/domain/model/player.dart';
+import 'package:boardgame/domain/repository/player.dart';
+import 'package:boardgame/domain/service/player.dart';
+import 'package:boardgame/provider/hive/player.dart';
+import 'package:boardgame/store/player.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -207,10 +212,14 @@ class AppRouterDelegate extends RouterDelegate<RouteConfiguration>
           () async {
             ScopedDependencies deps = ScopedDependencies();
 
-            // await deps.put(ItemHiveProvider()).init();
-            // AbstractItemRepository itemRepository =
-            //     deps.put(ItemRepository(Get.find()));
-            // deps.put(ItemService(itemRepository));
+            await deps.put(PlayerHiveProvider()).init();
+            AbstractPlayerRepository playerRepository = deps.put(
+              PlayerRepository(
+                Get.find(),
+                initial: _state.arguments is Player ? _state.arguments : null,
+              ),
+            );
+            deps.put(PlayerService(playerRepository));
 
             return deps;
           },
@@ -249,7 +258,10 @@ extension RouteLinks on RouterState {
   void auth() => go(Routes.auth);
 
   /// Changes router location to the [Routes.home] page.
-  void home() => go(Routes.home);
+  void home({Player? player}) {
+    go(Routes.home);
+    arguments = player;
+  }
 
   /// Changes router location to the [Routes.game] page.
   void game() => go(Routes.game);

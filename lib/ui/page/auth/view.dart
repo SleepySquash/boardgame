@@ -15,7 +15,7 @@ class AuthView extends StatelessWidget {
       init: AuthController(Get.find()),
       builder: (AuthController c) {
         return Obx(() {
-          if (c.authStatus.value.isLoading) {
+          if (c.status.value.isLoading) {
             return const Scaffold(body: CircularProgressIndicator());
           }
 
@@ -26,13 +26,10 @@ class AuthView extends StatelessWidget {
                 children: [
                   const Text('BoardGame'),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: c.signIn,
-                    style: ElevatedButton.styleFrom(primary: Colors.lightBlue),
-                    child: const Text(
-                      'Register',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  TextField(
+                    controller: c.nameController,
+                    decoration:
+                        const InputDecoration(label: Text('Player name')),
                   ),
                   const SizedBox(height: 5),
                   ElevatedButton(

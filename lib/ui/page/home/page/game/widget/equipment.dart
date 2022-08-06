@@ -17,7 +17,7 @@ class EquipmentModal extends StatelessWidget {
           Text('Level: ${character.level.value}'),
           ...character.races.map((e) => Text(e.name)),
           ...character.classes.map((e) => Text(e.name)),
-          ...character.equipped.map((e) => Text(e.name))
+          ...character.equipped.map((e) => Text(e.name)),
         ],
       );
     });

@@ -1,9 +1,12 @@
+import 'package:boardgame/ui/page/home/page/main/page/play/view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '/router.dart';
 import '/util/platform_utils.dart';
 import 'controller.dart';
+import 'page/deck/view.dart';
+import 'page/profile/view.dart';
 
 class MainView extends StatelessWidget {
   const MainView({Key? key}) : super(key: key);
@@ -24,7 +27,7 @@ class MainView extends StatelessWidget {
                       selected = 1;
                       break;
 
-                    case MainTab.game:
+                    case MainTab.play:
                       selected = 0;
                       break;
 
@@ -38,7 +41,7 @@ class MainView extends StatelessWidget {
                     onDestinationSelected: (i) {
                       switch (i) {
                         case 0:
-                          c.selected.value = MainTab.game;
+                          c.selected.value = MainTab.play;
                           break;
 
                         case 1:
@@ -91,7 +94,7 @@ class MainView extends StatelessWidget {
                       selected = 0;
                       break;
 
-                    case MainTab.game:
+                    case MainTab.play:
                       selected = 1;
                       break;
 
@@ -112,7 +115,7 @@ class MainView extends StatelessWidget {
                           break;
 
                         case 1:
-                          c.selected.value = MainTab.game;
+                          c.selected.value = MainTab.play;
                           break;
 
                         case 2:
@@ -148,13 +151,15 @@ class MainView extends StatelessWidget {
   Widget _page(MainController c) {
     return Obx(() {
       switch (c.selected.value) {
-        case MainTab.game:
-          return Center(
-            child: TextButton(
-              onPressed: router.game,
-              child: const Text('Play'),
-            ),
-          );
+        case MainTab.play:
+          return const PlayView();
+
+        case MainTab.deck:
+          return const DeckView();
+
+        case MainTab.profile:
+          return const ProfileView();
+
         default:
           return Container();
       }

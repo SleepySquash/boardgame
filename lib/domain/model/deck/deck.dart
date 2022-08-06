@@ -8,6 +8,7 @@ class Deck {
     this.classes = const [],
     this.races = const [],
     this.levels = const [],
+    this.beasts = const [],
     this.equipable = const [],
   });
 
@@ -21,7 +22,9 @@ class Deck {
 
   final List<Race> races;
 
-  final List<LevelUp> levels;
+  final List<LevelAddition> levels;
+
+  final List<EnemyAddition> beasts;
 
   final List<Equipable> equipable;
 

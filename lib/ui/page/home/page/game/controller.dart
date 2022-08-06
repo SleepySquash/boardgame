@@ -1,3 +1,7 @@
+import 'package:boardgame/domain/service/player.dart';
+import 'package:boardgame/router.dart';
+import 'package:boardgame/ui/page/home/page/game/widget/result.dart';
+import 'package:boardgame/ui/widget/modal_popup.dart';
 import 'package:boardgame/util/message_popup.dart';
 import 'package:collection/collection.dart';
 import 'package:get/get.dart';
@@ -17,16 +21,24 @@ enum RoundStage {
 }
 
 class GameController extends GetxController {
+  GameController(this._playerService);
+
   final Character character = Character();
-  final Player player = const Player('Name');
 
   late final Deck deck;
 
-  final Rx<Player?> turn = Rx(null);
+  final Rx<PlayerId?> turn = Rx(null);
   final Rx<RoundStage?> stage = Rx(null);
+
+  final int winLevel = 10;
+  int treasuresToTake = 1;
 
   final RxList<Card> top = RxList();
   final RxList<Card> bottom = RxList();
+
+  final PlayerService _playerService;
+
+  Rx<Player?> get player => _playerService.player;
 
   @override
   void onInit() {
@@ -46,7 +58,7 @@ class GameController extends GetxController {
     ];
 
     stage.value = RoundStage.start;
-    turn.value = player;
+    turn.value = player.value!.id;
 
     super.onInit();
   }
@@ -88,10 +100,30 @@ class GameController extends GetxController {
     }
 
     if (myPower > enemyPower) {
+      int treasures = 0;
+      int levels = 0;
+
+      for (var e in top) {
+        if (e is Enemy) {
+          levels += e.levels;
+          treasures += e.treasures;
+        }
+      }
+
+      character.level.value += levels;
+      treasuresToTake = treasures;
+
       top.clear();
       bottom.clear();
-      character.level.value += 1;
-      stage.value = RoundStage.treasure;
+
+      if (character.level.value >= winLevel) {
+        stage.value = RoundStage.end;
+        turn.value = null;
+        _playerService.addExperience(100);
+        ModalPopup.show(context: router.context!, child: const ResultModal());
+      } else {
+        stage.value = RoundStage.treasure;
+      }
     }
   }
 
@@ -108,6 +140,11 @@ class GameController extends GetxController {
     }
 
     stage.value = RoundStage.start;
+  }
+
+  void spawnTreasures() {
+    top.value = deck.treasures.sample(treasuresToTake);
+    stage.value = RoundStage.end;
   }
 
   void takeTreasure([int amount = 1]) {
@@ -128,7 +165,7 @@ class GameController extends GetxController {
         equipped = true;
         character.classes.add(card);
       } else if (card is Race) {
-        if (character.classes.isNotEmpty) {
+        if (character.races.isNotEmpty) {
           MessagePopup.success('Only one race may be equipped');
           return;
         }
@@ -156,7 +193,7 @@ class GameController extends GetxController {
         character.equipped.add(card);
         equipped = true;
       }
-    } else if (card is LevelUp) {
+    } else if (card is LevelAddition) {
       character.level.value += 1;
       equipped = true;
     }
@@ -174,7 +211,7 @@ class GameController extends GetxController {
   }
 
   void addToTop(Card card) {
-    if (card is LevelUp) {
+    if (card is LevelAddition) {
       character.hand.remove(card);
       character.level.value += 1;
     } else {
@@ -198,7 +235,7 @@ class GameController extends GetxController {
   }
 
   void addToBottom(Card card) {
-    if (card is LevelUp) {
+    if (card is LevelAddition) {
       character.hand.remove(card);
       character.level.value += 1;
     } else {

@@ -6,6 +6,7 @@ import 'enemy.dart';
 import 'equipable.dart';
 import 'level.dart';
 import 'race.dart';
+import 'wanderer_beast.dart';
 
 class StandardDeck {
   static List<Curse> get curses => [
@@ -35,8 +36,12 @@ class StandardDeck {
         Ork(),
       ];
 
-  static List<LevelUp> get levels => [
+  static List<LevelAddition> get levels => [
         GetLevel(),
+      ];
+
+  static List<EnemyAddition> get beasts => [
+        WandererBeast(),
       ];
 
   static List<Equipable> get equipable => [

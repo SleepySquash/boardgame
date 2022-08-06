@@ -2,10 +2,10 @@ import 'package:get/get.dart';
 
 enum MainTab {
   deck,
-  game,
+  play,
   profile,
 }
 
 class MainController extends GetxController {
-  final Rx<MainTab> selected = Rx(MainTab.game);
+  final Rx<MainTab> selected = Rx(MainTab.play);
 }
