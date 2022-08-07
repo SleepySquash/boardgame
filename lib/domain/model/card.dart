@@ -45,10 +45,6 @@ mixin Torso on Equipable {}
 
 mixin Shoes on Equipable {}
 
-mixin LArm on Equipable {}
-
-mixin RArm on Equipable {}
-
 mixin Hand on Equipable {
   bool get twoHand => false;
 }
