@@ -9,3 +9,8 @@ class Wizard extends Card with Door, Equipable, Class {
   @override
   String get name => 'Wizard';
 }
+
+class Thief extends Card with Door, Equipable, Class {
+  @override
+  String get name => 'Thief';
+}

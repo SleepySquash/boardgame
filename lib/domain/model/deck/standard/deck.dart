@@ -18,16 +18,21 @@ class StandardDeck {
         NotTerribleMonkey(),
         Yor(),
         AngryYor(),
+        Zombie(),
+        ZombieWarrior(),
       ];
 
   static List<Bonus> get bonuses => [
         PlusTwo(),
         PlusFive(),
+        PoisonBottle2(),
+        PoisonBottle5(),
       ];
 
   static List<Class> get classes => [
         Warrior(),
         Wizard(),
+        Thief(),
       ];
 
   static List<Race> get races => [
@@ -48,5 +53,6 @@ class StandardDeck {
         WoodenHelmet(),
         WoodenArmor(),
         WoodenShoes(),
+        IronSword(),
       ];
 }

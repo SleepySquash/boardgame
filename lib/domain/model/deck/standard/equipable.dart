@@ -23,3 +23,11 @@ class WoodenShoes extends Card with Treasure, Equipable, Shoes {
   @override
   int get bonus => 1;
 }
+
+class IronSword extends Card with Treasure, Equipable, LArm, RArm {
+  @override
+  String get name => 'Iron Sword';
+
+  @override
+  int get bonus => 3;
+}

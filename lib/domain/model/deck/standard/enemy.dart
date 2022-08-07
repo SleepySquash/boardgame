@@ -56,3 +56,43 @@ class AngryYor extends Card with Door, Enemy {
   @override
   int get levels => 2;
 }
+
+class Zombie extends Card with Door, Enemy {
+  @override
+  String get name => 'Zombie';
+
+  @override
+  String get description => 'He wants to eat your brain';
+
+  @override
+  String? get asset => 'door/enemy/zombie.png';
+
+  @override
+  int get level => 6;
+
+  @override
+  int get treasures => 1;
+
+  @override
+  int get levels => 1;
+}
+
+class ZombieWarrior extends Card with Door, Enemy {
+  @override
+  String get name => 'Zombie Warrior';
+
+  @override
+  String get description => 'He wants to eat your brain x2';
+
+  @override
+  String? get asset => 'door/enemy/zombie_warrior.png';
+
+  @override
+  int get level => 12;
+
+  @override
+  int get treasures => 2;
+
+  @override
+  int get levels => 1;
+}
