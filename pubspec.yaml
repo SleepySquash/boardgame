@@ -32,3 +32,4 @@ flutter:
   assets:
     - assets/card/door/enemy/
     - assets/card/door/curse/
+    - assets/card/treasure/

@@ -20,6 +20,20 @@ class StandardDeck {
         AngryYor(),
         Zombie(),
         ZombieWarrior(),
+        Lich(),
+        Imp(),
+        BigImp(),
+        Cast(),
+        Mummy(),
+        WildTroll(),
+        Ogr(),
+        StoneGolem(),
+        Gargoly(),
+        WaterGirlMonster(),
+        StrangeWolf(),
+        AngryMage(),
+        Necromant(),
+        Dracula(),
       ];
 
   static List<Bonus> get bonuses => [

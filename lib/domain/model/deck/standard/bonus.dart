@@ -42,4 +42,7 @@ class PoisonBottle5 extends Card with Door, Bonus {
 
   @override
   int get bonus => -5;
+
+  @override
+  String? get asset => 'treasure/venom_poison.png';
 }
