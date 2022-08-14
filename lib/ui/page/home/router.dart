@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '/router.dart';
 import 'page/game/view.dart';
-import 'page/main/view.dart';
+import 'page/dashboard/view.dart';
 
 /// [Routes.home] page [RouterDelegate] that builds the nested [Navigator].
 ///
@@ -25,23 +25,19 @@ class HomeRouterDelegate extends RouterDelegate<RouteConfiguration>
     List<Page<dynamic>> pages = [];
 
     for (String route in _state.routes) {
-      if (route.startsWith(Routes.game)) {
+      if (route == Routes.game) {
         pages.add(const MaterialPage(
           key: ValueKey('GamePage'),
           name: Routes.game,
           child: GameView(),
         ));
-      }
-    }
-
-    if (pages.isEmpty) {
-      return [
-        const MaterialPage(
-          key: ValueKey('MainPage'),
+      } else if (route == Routes.home) {
+        pages.add(const MaterialPage(
+          key: ValueKey('DashboardPage'),
           name: Routes.home,
-          child: MainView(),
-        )
-      ];
+          child: DashboardView(),
+        ));
+      }
     }
 
     return pages;

@@ -1,58 +1,58 @@
-import 'package:boardgame/ui/page/home/page/main/page/play/view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '/router.dart';
 import '/util/platform_utils.dart';
 import 'controller.dart';
 import 'page/deck/view.dart';
+import 'page/play/view.dart';
 import 'page/profile/view.dart';
 
-class MainView extends StatelessWidget {
-  const MainView({Key? key}) : super(key: key);
+class DashboardView extends StatelessWidget {
+  const DashboardView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GetBuilder(
-      init: MainController(),
-      builder: (MainController c) {
+      init: DashboardController(),
+      builder: (DashboardController c) {
+        int _selectedIndex(MainTab value) {
+          switch (value) {
+            case MainTab.deck:
+              return context.isMobile ? 0 : 1;
+
+            case MainTab.play:
+              return context.isMobile ? 1 : 0;
+
+            case MainTab.profile:
+              return context.isMobile ? 2 : 2;
+          }
+        }
+
+        void _destinationSelected(int i) {
+          switch (i) {
+            case 0:
+              c.selected.value = context.isMobile ? MainTab.deck : MainTab.play;
+              break;
+
+            case 1:
+              c.selected.value = context.isMobile ? MainTab.play : MainTab.deck;
+              break;
+
+            case 2:
+              c.selected.value =
+                  context.isMobile ? MainTab.profile : MainTab.profile;
+              break;
+          }
+        }
+
         return Scaffold(
           body: Row(
             children: [
               if (!context.isMobile)
                 Obx(() {
-                  int selected = 0;
-                  switch (c.selected.value) {
-                    case MainTab.deck:
-                      selected = 1;
-                      break;
-
-                    case MainTab.play:
-                      selected = 0;
-                      break;
-
-                    case MainTab.profile:
-                      selected = 2;
-                      break;
-                  }
-
                   return NavigationRail(
-                    selectedIndex: selected,
-                    onDestinationSelected: (i) {
-                      switch (i) {
-                        case 0:
-                          c.selected.value = MainTab.play;
-                          break;
-
-                        case 1:
-                          c.selected.value = MainTab.deck;
-                          break;
-
-                        case 2:
-                          c.selected.value = MainTab.profile;
-                          break;
-                      }
-                    },
+                    selectedIndex: _selectedIndex(c.selected.value),
+                    onDestinationSelected: _destinationSelected,
                     labelType: NavigationRailLabelType.selected,
                     destinations: const [
                       NavigationRailDestination(
@@ -88,41 +88,12 @@ class MainView extends StatelessWidget {
           ),
           bottomNavigationBar: context.isMobile
               ? Obx(() {
-                  int selected = 0;
-                  switch (c.selected.value) {
-                    case MainTab.deck:
-                      selected = 0;
-                      break;
-
-                    case MainTab.play:
-                      selected = 1;
-                      break;
-
-                    case MainTab.profile:
-                      selected = 2;
-                      break;
-                  }
-
                   return NavigationBar(
                     labelBehavior:
                         NavigationDestinationLabelBehavior.onlyShowSelected,
                     backgroundColor: Colors.white,
-                    selectedIndex: selected,
-                    onDestinationSelected: (i) {
-                      switch (i) {
-                        case 0:
-                          c.selected.value = MainTab.deck;
-                          break;
-
-                        case 1:
-                          c.selected.value = MainTab.play;
-                          break;
-
-                        case 2:
-                          c.selected.value = MainTab.profile;
-                          break;
-                      }
-                    },
+                    selectedIndex: _selectedIndex(c.selected.value),
+                    onDestinationSelected: _destinationSelected,
                     destinations: const [
                       NavigationDestination(
                         selectedIcon: Icon(Icons.sim_card),
@@ -148,7 +119,7 @@ class MainView extends StatelessWidget {
     );
   }
 
-  Widget _page(MainController c) {
+  Widget _page(DashboardController c) {
     return Obx(() {
       switch (c.selected.value) {
         case MainTab.play:

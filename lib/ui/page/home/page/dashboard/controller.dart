@@ -6,6 +6,6 @@ enum MainTab {
   profile,
 }
 
-class MainController extends GetxController {
+class DashboardController extends GetxController {
   final Rx<MainTab> selected = Rx(MainTab.play);
 }
