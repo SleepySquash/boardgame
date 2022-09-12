@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import '/domain/model/player.dart';
 import '/domain/repository/player.dart';
 
-class PlayerService extends GetxService {
+class PlayerService extends DisposableInterface {
   PlayerService(this._playerRepository);
 
   final AbstractPlayerRepository _playerRepository;
